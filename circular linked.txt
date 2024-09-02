@@ -1,0 +1,189 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct llist {
+    int number;
+    struct llist *next;
+};
+
+typedef struct llist node;
+node *head = NULL, *last = NULL;
+
+void inputll();
+void display();
+void insertlast(int value);
+void insertfirst(int value);
+void insertafter(int key, int value);
+void delitem(int value);
+
+int main() {
+    int key, value;
+
+    printf("Create Linked List\n");
+    inputll();
+    display();
+
+    printf("\nInsert new item at last\n");
+    scanf("%d", &value);
+    insertlast(value);
+    display();
+
+    printf("\nInsert new item at first\n");
+    scanf("%d", &value);
+    insertfirst(value);
+    display();
+
+    printf("\nEnter a KEY (existing item of List) after which you want to insert a value\n");
+    scanf("%d", &key);
+    printf("\nInsert new item after %d KEY\n", key);
+    scanf("%d", &value);
+    insertafter(key, value);
+    display();
+
+    printf("\nEnter a value which you want to delete from list\n");
+    scanf("%d", &value);
+    delitem(value);
+    display();
+
+    return 0;
+}
+
+void inputll() {
+    int val;
+
+    while (1) {
+        printf("Input a number. (Enter -1 to exit)\n");
+        scanf("%d", &val);
+
+        if (val == -1)
+            break;
+
+        insertlast(val);
+    }
+}
+
+void insertlast(int value) {
+    node *temp_node = (node *)malloc(sizeof(node));
+    if (temp_node == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+
+    temp_node->number = value;
+    temp_node->next = head;
+
+    if (head == NULL) {
+        head = temp_node;
+        last = temp_node;
+        last->next = head; 
+    } else {
+        last->next = temp_node;
+        last = temp_node;
+        last->next = head; 
+    }
+}
+
+void insertfirst(int value) {
+    node *temp_node = (node *)malloc(sizeof(node));
+    if (temp_node == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+
+    temp_node->number = value;
+    if (head == NULL) {
+        head = temp_node;
+        last = temp_node;
+        last->next = head; 
+    } else {
+        temp_node->next = head;
+        head = temp_node;
+        last->next = head; 
+    }
+}
+
+void insertafter(int key, int value) {
+    node *myNode = head;
+
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    do {
+        if (myNode->number == key) {
+            node *newNode = (node *)malloc(sizeof(node));
+            if (newNode == NULL) {
+                printf("Memory allocation failed!\n");
+                exit(1);
+            }
+
+            newNode->number = value;
+            newNode->next = myNode->next;
+            myNode->next = newNode;
+
+            if (myNode == last) {
+                last = newNode; 
+            }
+
+            printf("%d is inserted after %d\n", value, key);
+            return;
+        }
+        myNode = myNode->next;
+    } while (myNode != head);
+
+    printf("Key %d not found!\n", key);
+}
+
+void delitem(int value) {
+    node *myNode = head, *previous = NULL;
+
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    do {
+        if (myNode->number == value) {
+            if (previous == NULL) { 
+                if (head == last) {
+                    head = last = NULL;
+                } else {
+                    head = myNode->next;
+                    last->next = head;
+                }
+            } else {
+                previous->next = myNode->next;
+                if (myNode == last) {
+                    last = previous;
+                }
+            }
+
+            printf("%d is deleted from list\n", value);
+            free(myNode);
+            return;
+        }
+
+        previous = myNode;
+        myNode = myNode->next;
+    } while (myNode != head);
+
+    printf("Item %d not found!\n", value);
+}
+
+void display() {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    printf("\nYour full linked list is\n");
+
+    node *myList = head;
+    do {
+        printf("%d -> ", myList->number);
+        myList = myList->next;
+    } while (myList != head);
+
+    puts("(The list is circular and points to the first NODE(head))");
+}

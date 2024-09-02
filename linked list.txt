@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+       int data;
+       struct Node* next;
+};
+
+void insertatbeg(struct Node** head,int key){
+       struct Node* NewNode = (struct Node*)malloc(sizeof(struct Node));
+       NewNode->data=key;
+       NewNode->next=*head;
+       *head=NewNode;
+}
+
+void insertAtEnd(struct Node** head, int key)
+{
+    struct Node* newNode= (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = key;
+    newNode->next = NULL;
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+ struct Node* current = *head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    current->next = newNode;
+}
+
+void printList(struct Node* head)
+{
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d->", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+void deleteNode(struct Node** head_ref, int key) 
+{ 
+    struct Node *temp = *head_ref, *prev; 
+    if (temp != NULL && temp->data == key) { 
+        *head_ref = temp->next;
+        free(temp);
+        return; 
+    } 
+  
+    while (temp != NULL && temp->data != key) { 
+        prev = temp; 
+        temp = temp->next; 
+    } 
+  if (temp == NULL) 
+        return; 
+      prev->next = temp->next; 
+  
+    free(temp); 
+} 
+
+int main()
+{  
+    struct Node* head = NULL;
+    insertatbeg(&head, 10);
+    insertAtEnd(&head, 20);
+    insertatbeg(&head, 5);
+    insertAtEnd(&head, 60);
+    deleteNode(&head, 30);
+    printf("List:");
+    printList(head);
+ 
+    return 0;
+}
+ 
