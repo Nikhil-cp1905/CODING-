@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+       int data;
+       struct Node* next;
+};
+
+void insertatbeg(struct Node** head,int key){
+       struct Node* NewNode = (struct Node*)malloc(sizeof(struct Node));
+       NewNode->data=key;
+       NewNode->next=*head;
+       *head=NewNode;
+}
+
+void printList(struct Node* head)
+{
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d->", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+void delatend(struct Node** head_ref){
+       struct Node *temp = *head_ref, *prev; 
+       if (temp != NULL) { 
+        *head_ref = temp->next;
+        free(temp);
+        return; 
+    } 
+
+}
+int main()
+{  
+    struct Node* head = NULL;
+    insertatbeg(&head, 10);
+    insertatbeg(&head, 10);
+    //insertatbeg(&head, 5);
+    delatend(&head);
+        insertatbeg(&head, 20);
+
+    printf("List:");
+    printList(head);
+ 
+ 
+    return 0;
+}
+ 
