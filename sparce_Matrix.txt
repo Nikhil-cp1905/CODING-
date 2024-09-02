@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+//making structure for matrix
+struct llist{
+   int row;
+   int col;
+   int number;
+   struct llist *next;
+};
+
+typedef struct llist node;
+node *head=NULL,*last=NULL;
+//decalaring function
+void inputllast(int value,int r,int c);
+void display();
+
+int main(){
+    int sparseMatric[4][5] =
+    {
+        {0 , 0 , 3 , 0 , 4 },
+        {0 , 0 , 5 , 7 , 0 },
+        {0 , 0 , 0 , 0 , 0 },
+        {0 , 2 , 6 , 0 , 0 }
+    };
+    //looping matrix
+       for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 5; j++){
+            if (sparseMatric[i][j] != 0){
+                inputllast(sparseMatric[i][j],i,j);
+            }}}
+            display();
+            return 0;
+}
+//to input the matrix value in list
+void inputllast(int value,int r,int c){
+   node *tempnode = (node *)malloc(sizeof(node));
+   if(tempnode==NULL){
+      printf("memory allocation failed");
+      exit(1);
+   }
+   tempnode->row=r;
+   tempnode->col=c;
+   tempnode->number=value;
+   //for first node
+   if (head==NULL){
+      head=tempnode;
+      last=tempnode;
+   }
+   else{
+      last->next=tempnode;
+      last=tempnode;
+   }
+}
+//display the nodes
+void display() {
+    printf("\nYour full linked list is\n");
+
+    node *myList = head;
+    while (myList != NULL) {
+        // Print the node's data in the format [row | col | number] -> 
+        printf("[ %d | %d | %d ] -> ", myList->row, myList->col, myList->number);
+        myList = myList->next;
+    }
+
+    // Print NULL to indicate the end of the list
+    printf("NULL");
+}
